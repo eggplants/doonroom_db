@@ -22,6 +22,7 @@ $ curl -O 'http://doonroom.blog.jp/archives/cat_966405.html?p=[0-180]'
 $ mkdir dojin; mv cat_966405* dojin
 $ curl --create-dirs -O 'http://doonroom.blog.jp/archives/cat_966995.html?p=[0-99]'
 $ mkdir hypno; mv cat_966995* hypno
+# パース && DB作成
 $ python main.py
 ```
 
