@@ -19,37 +19,38 @@ class Parser(object):
 
         self.category = category
 
-    def ext_text_from_array(self, arr: List) -> List[str]:
-        """Extract texts from each node in an array."""
-        return [i for i in map(lambda v:v.text, arr)]
-
-    def convert_product_from_aff(self, link: str) -> str:
-        """Convert an affiliated link into a raw link."""
-        product_path = 'work/=/product_'
-        link = link.replace('dlaf/=/t/i/link/work/aid/momonoyu/', product_path)
-        link = link.replace('dlaf/=/link/work/aid/momonoyu/', product_path)
-
-        return link.replace('doonroom-001/', '')
-
     def href_text_from_array(self, arr: List[Tag]) -> List[str]:
         """Extract hrefs from each node in an array."""
-        links = [self.convert_product_from_aff(i)
+
+        def convert_product_from_aff(link: str) -> str:
+            """Convert an affiliated link into a raw link."""
+            product_path = 'work/=/product_'
+            link = link.replace(
+                'dlaf/=/t/i/link/work/aid/momonoyu/', product_path)
+            link = link.replace('dlaf/=/link/work/aid/momonoyu/', product_path)
+            return link.replace('doonroom-001/', '')
+
+        links = [convert_product_from_aff(i)
                  for i in map(lambda v: v['href'], arr)
                  if 'doonroom.blog.jp' not in i]
         return list(set(links))
 
-    def rate(self, page: object):
-        """Get rating points from a rating bar."""
-        try:
-            rating_bar = page.find_all(
-                'span', style='font-size: large;', text=re.compile('点')
-            )[-1].text
-            return int(re.search(r'(\d+)点', rating_bar).group(1))
-        except IndexError:
-            return 0
-
     def parse(self, path: str) -> List[dict]:
         """Extract required information from the page sources and scrape it."""
+
+        def ext_text_from_array(arr: List) -> List[str]:
+            """Extract texts from each node in an array."""
+            return [i for i in map(lambda v:v.text, arr)]
+
+        def rate(page: object):
+            """Get rating points from a rating bar."""
+
+            rating_bar = page.find_all(
+                'span', style='font-size: large;', text=re.compile('点')
+            )
+            return (int(re.search(r'(\d+)点', rating_bar[-1].text).group(1))
+                    if not not rating_bar else 0)
+
         print(path, end="\r")
         bs = BS(open(path, 'r'), 'lxml')
         pages = bs.find_all(
@@ -71,7 +72,7 @@ class Parser(object):
 
             data['body'] = page.select_one('div.article-body-inner').get_text()
 
-            data['rating'] = self.rate(page)
+            data['rating'] = rate(page)
 
             data['page_category'] = page.find_all(
                 'dd', class_='article-category1'
@@ -80,7 +81,7 @@ class Parser(object):
             data['buy_links'] = self.href_text_from_array(
                 page.find_all('a', href=True))
 
-            data['tags'] = self.ext_text_from_array(page.dl.find_all('a'))
+            data['tags'] = ext_text_from_array(page.dl.find_all('a'))
 
             data['type'] = self.category
 
