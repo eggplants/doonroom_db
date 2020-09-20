@@ -8,14 +8,26 @@
   * カテゴリ[同人音声]と[催眠音声]を取得
   * パースしてカテゴリごとのテーブルに格納
 
-## ページ取得
+## DB作成
 
 ```bash
+# ページ取得
 $ LANG= date
-Sat Sep 19 20:36:42 JST 2020
+Sun Sep 20 14:27:16 JST 2020
 $ curl -O 'http://doonroom.blog.jp/archives/cat_966405.html?p=[0-180]'
-$ curl -O 'http://doonroom.blog.jp/archives/cat_966995.html?p=[0-99]'
+$ mkdir dojin; mv cat_966405* dojin
+$ curl --create-dirs -O 'http://doonroom.blog.jp/archives/cat_966995.html?p=[0-99]'
+$ mkdir hypno; mv cat_966995* hypno
+$ python main.py
 ```
+
+## ログ
+
+* skip_rows
+  * 何個かarticleのパースがおかしくなってスキップしたやつを保存
+
+* log
+  * 発行したSQL
 
 ## スキーマ
 
@@ -23,7 +35,7 @@ $ curl -O 'http://doonroom.blog.jp/archives/cat_966995.html?p=[0-99]'
 
 ```text
 page {
-  page_id integer PRIMARY KEY,
+  page_id integer,
   article_link text,
   post_date text,
   title text,
@@ -34,12 +46,12 @@ page {
 }
 
 link {
-  page_id integer PRIMARY KEY,
+  page_id integer,
   buy_link text,
   type text (-> [dlsite|fanza|other])
 }
 tag {
-  page_id integer PRIMARY KEY,
+  page_id integer,
   tag text
 }
 ```
