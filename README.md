@@ -22,9 +22,26 @@ $ curl -O 'http://doonroom.blog.jp/archives/cat_966995.html?p=[0-99]'
 * [同人音声], [催眠音声]共通
 
 ```text
-ページ: page_id,post_date,title,body,rating,category
-リンク: id,販売リンク,dl?fanza?
-タグ: id,タグ
+page {
+  page_id integer PRIMARY KEY,
+  article_link text,
+  post_date text,
+  title text,
+  body text,
+  rating integer,
+  category text,
+  type text (-> [dojin|hypno|other])
+}
+
+link {
+  page_id integer PRIMARY KEY,
+  buy_link text,
+  type text (-> [dlsite|fanza|other])
+}
+tag {
+  page_id integer PRIMARY KEY,
+  tag text
+}
 ```
 
 ## TODO
