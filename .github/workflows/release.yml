@@ -28,5 +28,5 @@ jobs:
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
-          artifact: ./doonroom.db
+          artifacts: "./doonroom.db"
           token: ${{ secrets.GITHUB_TOKEN }}
