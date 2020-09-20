@@ -13,7 +13,6 @@ class ParseUnknownCategory(Exception):
 class Parser(object):
 
     def __init__(self, category: str) -> None:
-        self.log = open('skip_works', 'w')
         if category not in ['hypno', 'dojin']:
             raise ParseUnknownCategory("Unknown Category: %s" % self.category)
 
@@ -46,8 +45,9 @@ class Parser(object):
 
     def parse(self, path: str) -> List[dict]:
         print(path, end="\r")
-        bs = BS(open(path, 'r'), 'html.parser')
-        pages = bs.find_all('article')
+        bs = BS(open(path, 'r'), 'lxml')
+        pages = bs.find_all(
+            'article', attrs={"itemtype": "http://schema.org/BlogPosting"})
 
         ext_page_data = []
         for page in pages:
@@ -67,15 +67,9 @@ class Parser(object):
 
             data['rating'] = self.rate(page)
 
-            try:
-                data['page_category'] = page.find_all(
-                    'dd', class_='article-category1'
-                )[-1].text
-            except IndexError:
-                # 何個かarticleのパースがおかしくなるやつがある
-                # skip_worksに保存
-                print(page.h1.a.text, page.h1.a['href'], file=self.log)
-                continue
+            data['page_category'] = page.find_all(
+                'dd', class_='article-category1'
+            )[-1].text
 
             data['buy_links'] = self.href_text_from_array(
                 page.find_all('a', href=True))
