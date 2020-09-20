@@ -10,26 +10,17 @@
 
 ## 必要
 
-* `python -m pip install bs4`
+* `python -m pip install bs4 lxml`
 
 ## DB作成
 
 ```bash
-# ページ取得
-$ LANG= date
-Sun Sep 20 14:27:16 JST 2020
-$ curl -O 'http://doonroom.blog.jp/archives/cat_966405.html?p=[0-180]'
-$ mkdir dojin; mv cat_966405* dojin
-$ curl --create-dirs -O 'http://doonroom.blog.jp/archives/cat_966995.html?p=[0-99]'
-$ mkdir hypno; mv cat_966995* hypno
-# パース && DB作成
+# ページ取得 && パース && DB作成
 $ python main.py
+Download pages? >> # "y"入力しEnterでページ新規取得
 ```
 
 ## ログ
-
-* `skip_rows`
-  * 何個か`<article>~</article>`のパースがおかしくなってスキップしたやつを保存
 
 * `log`
   * 発行したSQL
@@ -38,22 +29,22 @@ $ python main.py
 
 * [同人音声], [催眠音声]共通
 
-```text
+```sql
 page {
   page_id integer,
   article_link text,
   post_date text,
   title text,
   body text,
-  rating integer,
+  rating integer, -- 点数の無い記事は0を代入
   category text,
-  type text (-> [dojin|hypno|other])
+  type text -- [dojin|hypno|other]
 }
 
 link {
   page_id integer,
   buy_link text,
-  type text (-> [dlsite|fanza|other])
+  type text -- [dlsite|fanza|other]
 }
 tag {
   page_id integer,
@@ -63,11 +54,10 @@ tag {
 
 ## TODO
 
-- [ ] curlをPythonに
-- [ ] Actions
-- [ ] 検索UI
-  - [ ] CLI
-  - [ ] GUI
+* [ ] Actions
+* [ ] 検索UI
+  * [ ] CLI
+  * [ ] GUI
 
 [同人音声の部屋]: http://doonroom.blog.jp/
 
