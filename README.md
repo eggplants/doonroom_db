@@ -63,8 +63,11 @@ tag {
 
 ## TODO
 
-* 自動更新
-* CLI
+- [ ] curlをPythonに
+- [ ] Actions
+- [ ] 検索UI
+  - [ ] CLI
+  - [ ] GUI
 
 [同人音声の部屋]: http://doonroom.blog.jp/
 
