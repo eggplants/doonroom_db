@@ -1,15 +1,8 @@
 name: doon
 on:
   push:
-    branches:
-      - master
     tags:
-      - '*'
-  pull_request:
-    branches:
-      - master
-    tags:
-      - '*'
+      - "*"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,7 +27,8 @@ jobs:
       - name: Create db
         run: |
           yes | python main.py
-      - uses: ncipollo/release-action@v1
-      with:
-        artifacts: "./doonroom.db"
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "./doonroom.db"
+          token: ${{ secrets.GITHUB_TOKEN }}
