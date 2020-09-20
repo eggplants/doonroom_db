@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.7, 3.8]
+        python-version: [3.8]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -25,10 +25,8 @@ jobs:
           python -m pip install -U pip
           python -m pip install flake8 pytest
           pip install -r requirements.txt
-      - name: Lint with flake8
-        run: |
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 . --count --exit-zero --statistics
+      - name: flake8 Lint
+        uses: py-actions/flake8@v1
       - name: Create db
         run: |
           yes | python main.py
