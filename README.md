@@ -28,10 +28,10 @@ $ python main.py
 
 ## ログ
 
-* skip_rows
-  * 何個かarticleのパースがおかしくなってスキップしたやつを保存
+* `skip_rows`
+  * 何個か`<article>~</article>`のパースがおかしくなってスキップしたやつを保存
 
-* log
+* `log`
   * 発行したSQL
 
 ## スキーマ
