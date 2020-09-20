@@ -65,14 +65,15 @@ class DoonDatabase(object):
                 ) '''
         ])
 
+    def type_link(self, link: str) -> str:
+        if 'dlsite' in link:
+            return 'dlsite'
+        elif 'dmm' in link:
+            return 'dmm'
+        else:
+            return 'other'
+
     def push(self, datas: List[dict]) -> None:
-        def type_link(link: str) -> str:
-            if 'dlsite' in link:
-                return 'dlsite'
-            elif 'dmm' in link:
-                return 'dmm'
-            else:
-                return 'other'
 
         def uniq(arr: List[Any]) -> List[Any]:
             return list(set(arr))
@@ -86,7 +87,7 @@ class DoonDatabase(object):
                  data['page_category'], data['type'])
             )
             link_data.extend(
-                [(data['page_id'], link, type_link(link))
+                [(data['page_id'], link, self.type_link(link))
                  for link in data['buy_links']]
             )
             tag_data.extend(
