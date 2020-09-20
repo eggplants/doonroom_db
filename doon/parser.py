@@ -1,8 +1,6 @@
 import datetime
 import re
 from typing import List
-
-from bs4.element import Tag
 from bs4 import BeautifulSoup as BS
 
 
@@ -19,22 +17,6 @@ class Parser(object):
 
         self.category = category
 
-    def href_text_from_array(self, arr: List[Tag]) -> List[str]:
-        """Extract hrefs from each node in an array."""
-
-        def convert_product_from_aff(link: str) -> str:
-            """Convert an affiliated link into a raw link."""
-            product_path = 'work/=/product_'
-            link = link.replace(
-                'dlaf/=/t/i/link/work/aid/momonoyu/', product_path)
-            link = link.replace('dlaf/=/link/work/aid/momonoyu/', product_path)
-            return link.replace('doonroom-001/', '')
-
-        links = [convert_product_from_aff(i)
-                 for i in map(lambda v: v['href'], arr)
-                 if 'doonroom.blog.jp' not in i]
-        return list(set(links))
-
     def parse(self, path: str) -> List[dict]:
         """Extract required information from the page sources and scrape it."""
 
@@ -44,12 +26,20 @@ class Parser(object):
 
         def rate(page: object):
             """Get rating points from a rating bar."""
-
             rating_bar = page.find_all(
                 'span', style='font-size: large;', text=re.compile('点')
             )
             return (int(re.search(r'(\d+)点', rating_bar[-1].text).group(1))
                     if not not rating_bar else 0)
+
+        def convert_product_from_aff(link: str) -> str:
+            """Convert an affiliated link into a raw link."""
+            product_path = 'work/=/product_'
+            link = link.replace(
+                'dlaf/=/t/i/link/work/aid/momonoyu/', product_path)
+            link = link.replace(
+                'dlaf/=/link/work/aid/momonoyu/', product_path)
+            return link.replace('doonroom-001/', '')
 
         print(path, end="\r")
         bs = BS(open(path, 'r'), 'lxml')
@@ -78,8 +68,13 @@ class Parser(object):
                 'dd', class_='article-category1'
             )[-1].text
 
-            data['buy_links'] = self.href_text_from_array(
-                page.find_all('a', href=True))
+            data['buy_links'] = list(set(
+                [convert_product_from_aff(i)
+                 for i in map(
+                    lambda v: v['href'], page.find_all('a', href=True)
+                )
+                    if 'doonroom.blog.jp' not in i]
+            ))
 
             data['tags'] = ext_text_from_array(page.dl.find_all('a'))
 

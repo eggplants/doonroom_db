@@ -8,7 +8,7 @@ from typing import Callable
 
 
 def get_filepaths(dirpath: str) -> List[str]:
-    """Get the file paths in the specified directory"""
+    """Get the file paths in the specified directory."""
     ext_num: Callable[str] = lambda value: int(
         value[-3:].replace('p', '').replace('=', ''))
     return sorted(glob(os.path.join('.', dirpath, '*')), key=ext_num)
@@ -16,7 +16,6 @@ def get_filepaths(dirpath: str) -> List[str]:
 
 def main() -> None:
     """Main!!!"""
-
     if input('Download pages? >> ') == 'y':
         Download(
             'dojin', 'http://doonroom.blog.jp/archives/cat_966405.html'
