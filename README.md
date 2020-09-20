@@ -64,7 +64,7 @@ tag {
 
 [Codacy Badge]: https://app.codacy.com/project/badge/Grade/26640885e35e482883b3119ef2fb6380
 
-[test]: https://github.com/eggplants/doonroom_db/workflows/doon/badge.svg
+[test]: https://github.com/eggplants/doonroom_db/workflows/test/badge.svg
 
 [release]: https://github.com/eggplants/doonroom_db/workflows/release/badge.svg
 
