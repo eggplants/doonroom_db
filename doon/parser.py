@@ -13,15 +13,18 @@ class ParseUnknownCategory(Exception):
 class Parser(object):
 
     def __init__(self, category: str) -> None:
+        """Init."""
         if category not in ['hypno', 'dojin']:
-            raise ParseUnknownCategory("Unknown Category: %s" % self.category)
+            raise ParseUnknownCategory("Unknown Category: %s" % category)
 
         self.category = category
 
     def ext_text_from_array(self, arr: List) -> List[str]:
+        """Extract texts from each node in an array."""
         return [i for i in map(lambda v:v.text, arr)]
 
     def convert_product_from_aff(self, link: str) -> str:
+        """Convert an affiliated link into a raw link."""
         product_path = 'work/=/product_'
         link = link.replace('dlaf/=/t/i/link/work/aid/momonoyu/', product_path)
         link = link.replace('dlaf/=/link/work/aid/momonoyu/', product_path)
@@ -29,12 +32,14 @@ class Parser(object):
         return link.replace('doonroom-001/', '')
 
     def href_text_from_array(self, arr: List[Tag]) -> List[str]:
+        """Extract hrefs from each node in an array."""
         links = [self.convert_product_from_aff(i)
                  for i in map(lambda v: v['href'], arr)
                  if 'doonroom.blog.jp' not in i]
         return list(set(links))
 
     def rate(self, page: object):
+        """Get rating points from a rating bar."""
         try:
             rating_bar = page.find_all(
                 'span', style='font-size: large;', text=re.compile('点')
@@ -44,6 +49,7 @@ class Parser(object):
             return 0
 
     def parse(self, path: str) -> List[dict]:
+        """Extract required information from the page sources and scrape it."""
         print(path, end="\r")
         bs = BS(open(path, 'r'), 'lxml')
         pages = bs.find_all(
@@ -81,6 +87,3 @@ class Parser(object):
             ext_page_data.append(data)
 
         return ext_page_data
-
-    def execute(self, path: str) -> List:
-        return self.parse(path)
