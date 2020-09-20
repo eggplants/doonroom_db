@@ -4,8 +4,6 @@ from doon_parser.parser import Parser
 from doon_parser.database import DoonDatabase
 from typing import List
 
-# import pprint
-
 
 def get_filepaths(dir) -> List[str]:
     def ext_num(value):
@@ -20,9 +18,8 @@ def main() -> None:
         for path in get_filepaths(category):
             parsed_data.extend(parser.execute(path))
 
-    DoonDatabase('test.db').push(parsed_data)
+    DoonDatabase('doonroom.db').push(parsed_data)
 
 
 if __name__ == '__main__':
-    # pprint(main())
     main()
