@@ -73,6 +73,7 @@ class Parser(object):
                 )[-1].text
             except IndexError:
                 # 何個かarticleのパースがおかしくなるやつがある
+                # skip_worksに保存
                 print(page.h1.a.text, page.h1.a['href'], file=self.log)
                 continue
 
