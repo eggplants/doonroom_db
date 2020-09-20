@@ -1,5 +1,7 @@
 # doonroom_db
 
+[![Codacy Badge]](https://www.codacy.com/manual/eggplants/doonroom_db?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=eggplants/doonroom_db&amp;utm_campaign=Badge_Grade) [![Maintainability]](https://codeclimate.com/github/eggplants/doonroom_db/maintainability)
+
 * [同人音声の部屋]DB化
 
 ## 概要
@@ -54,10 +56,13 @@ tag {
 
 ## TODO
 
-* [ ] Actions
 * [ ] 検索UI
   * [ ] CLI
   * [ ] GUI
+
+[Maintainability]: https://api.codeclimate.com/v1/badges/aa5bc7bb4dbc9209ab8e/maintainability
+
+[Codacy Badge]: https://app.codacy.com/project/badge/Grade/26640885e35e482883b3119ef2fb6380
 
 [同人音声の部屋]: http://doonroom.blog.jp/
 

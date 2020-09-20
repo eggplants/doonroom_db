@@ -6,15 +6,18 @@ from typing import Any
 
 class DoonDatabase(object):
     def __init__(self, db_filepath: str) -> None:
+        """Init."""
         self.db_filepath = db_filepath
         self.log = open('log', 'w')
         self.init_database()
 
     def init_database(self) -> None:
+        """Create a db file and tables if not exists."""
         connect(self.db_filepath)
         self.create_tables()
 
     def connect_db(self, db_file: str, sql: str, params: tuple = ('')) -> None:
+        """Connect to the database and execute the SQL."""
         conn = None
         try:
             conn = connect(db_file)
@@ -34,6 +37,7 @@ class DoonDatabase(object):
                 conn.close()
 
     def create_tables(self) -> None:
+        """Create the tables."""
         def unko(schemas: List[str]) -> None:
             for schema in schemas:
                 self.connect_db(
@@ -66,6 +70,7 @@ class DoonDatabase(object):
         ])
 
     def type_link(self, link: str) -> str:
+        """Return the link's type."""
         if 'dlsite' in link:
             return 'dlsite'
         elif 'dmm' in link:
@@ -74,10 +79,12 @@ class DoonDatabase(object):
             return 'other'
 
     def push(self, datas: List[dict]) -> None:
+        """Insert data to the database."""
 
         def uniq(arr: List[Any]) -> List[Any]:
+            """Make array elms unique."""
             return list(set(arr))
-        # page
+
         page_data, link_data, tag_data = [], [], []
         for data in datas:
             page_data.append(
