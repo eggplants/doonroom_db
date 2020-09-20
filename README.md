@@ -1,6 +1,6 @@
 # doonroom_db
 
-[![doon]](https://github.com/eggplants/doonroom_db/actions?query=workflow%3Adoon) [![Codacy Badge]](https://www.codacy.com/manual/eggplants/doonroom_db?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=eggplants/doonroom_db&amp;utm_campaign=Badge_Grade) [![Maintainability]](https://codeclimate.com/github/eggplants/doonroom_db/maintainability)
+[![release]](https://github.com/eggplants/doonroom_db/actions?query=workflow%3Arelease) [![test]](https://github.com/eggplants/doonroom_db/actions?query=workflow%3Atest) [![Codacy Badge]](https://www.codacy.com/manual/eggplants/doonroom_db?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=eggplants/doonroom_db&amp;utm_campaign=Badge_Grade) [![Maintainability]](https://codeclimate.com/github/eggplants/doonroom_db/maintainability)
 
 * [同人音声の部屋]DB化
 
@@ -64,7 +64,9 @@ tag {
 
 [Codacy Badge]: https://app.codacy.com/project/badge/Grade/26640885e35e482883b3119ef2fb6380
 
-[doon]: https://github.com/eggplants/doonroom_db/workflows/doon/badge.svg
+[test]: https://github.com/eggplants/doonroom_db/workflows/doon/badge.svg
+
+[release]: https://github.com/eggplants/doonroom_db/workflows/release/badge.svg
 
 [同人音声の部屋]: http://doonroom.blog.jp/
 
