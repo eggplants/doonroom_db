@@ -1,7 +1,9 @@
-from typing import List
-from bs4 import BeautifulSoup as BS
-from bs4.element import Tag
+import datetime
 import re
+from typing import List
+
+from bs4.element import Tag
+from bs4 import BeautifulSoup as BS
 
 
 class ParseUnknownCategory(Exception):
@@ -11,6 +13,7 @@ class ParseUnknownCategory(Exception):
 class Parser(object):
 
     def __init__(self, category: str) -> None:
+        self.log = open('skip_works', 'w')
         if category not in ['hypno', 'dojin']:
             raise ParseUnknownCategory("Unknown Category: %s" % self.category)
 
@@ -37,12 +40,12 @@ class Parser(object):
             rating_bar = page.find_all(
                 'span', style='font-size: large;', text=re.compile('点')
             )[-1].text
-            return re.search(r'(\d+)点', rating_bar).group(1)
+            return int(re.search(r'(\d+)点', rating_bar).group(1))
         except IndexError:
-            return '-'
+            return 0
 
     def parse(self, path: str) -> List[dict]:
-        print(path)
+        print(path, end="\r")
         bs = BS(open(path, 'r'), 'html.parser')
         pages = bs.find_all('article')
 
@@ -50,14 +53,18 @@ class Parser(object):
         for page in pages:
             data = {}
 
-            data['page_id'] = re.findall(r'\d+', page.h1.a['href'])[0]
+            data['page_id'] = int(re.findall(r'\d+', page.h1.a['href'])[0])
 
-            data['post_date'] = page.time['datetime']
+            data['article_link'] = page.h1.a['href']
+
+            data['post_date'] = int(datetime.datetime.fromisoformat(
+                page.time['datetime']
+            ).timestamp())
 
             data['title'] = page.h1.a.text
 
             data['body'] = page.select_one('div.article-body-inner').get_text()
-            exit(0)
+
             data['rating'] = self.rate(page)
 
             try:
@@ -66,10 +73,8 @@ class Parser(object):
                 )[-1].text
             except IndexError:
                 # 何個かarticleのパースがおかしくなるやつがある
-                print(page.h1.a.text)
+                print(page.h1.a.text, page.h1.a['href'], file=self.log)
                 continue
-
-            data['article_link'] = page.h1.a['href']
 
             data['buy_links'] = self.href_text_from_array(
                 page.find_all('a', href=True))
