@@ -25,20 +25,7 @@ jobs:
       - name: Create db
         run: |
           yes | python main.py
-      - name: Create release
-        uses: actions/create-release@v1.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./doonroon.db
-          asset_name: doonroom.db
+          artifact: ./doonroom.db
+          token: ${{ secrets.GITHUB_TOKEN }}
