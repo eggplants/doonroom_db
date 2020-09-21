@@ -26,11 +26,10 @@ class Parser(object):
 
         def rate(page: object):
             """Get rating points from a rating bar."""
-            rating_bar = page.find_all(
-                'span', style='font-size: large;', text=re.compile('点')
+            rating_bar = re.search(
+                r'[■□]{10}　(\d+)', page.get_text()
             )
-            return (int(re.search(r'(\d+)点', rating_bar[-1].text).group(1))
-                    if not not rating_bar else 0)
+            return (int(rating_bar.group(1) if not not rating_bar else 0))
 
         def convert_product_from_aff(link: str) -> str:
             """Convert an affiliated link into a raw link."""
