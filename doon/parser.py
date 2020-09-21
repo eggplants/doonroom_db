@@ -1,6 +1,6 @@
 import datetime
 import re
-from typing import List
+from typing import List, Callable, Any
 from bs4 import BeautifulSoup as BS
 
 
@@ -14,31 +14,29 @@ class Parser(object):
         """Init."""
         if category not in ['hypno', 'dojin']:
             raise ParseUnknownCategory("Unknown Category: %s" % category)
-
-        self.category = category
+        else:
+            self.category = category
 
     def parse(self, path: str) -> List[dict]:
         """Extract required information from the page sources and scrape it."""
 
-        def ext_text_from_array(arr: List) -> List[str]:
-            """Extract texts from each node in an array."""
-            return [i for i in map(lambda v:v.text, arr)]
-
-        def rate(page: object):
-            """Get rating points from a rating bar."""
-            rating_bar = re.search(
-                r'[■□]{10}　(\d+)', page.get_text()
-            )
-            return (int(rating_bar.group(1) if not not rating_bar else 0))
-
         def convert_product_from_aff(link: str) -> str:
             """Convert an affiliated link into a raw link."""
+            aff_link = 'dlaf/={}link/work/aid/momonoyu/'
             product_path = 'work/=/product_'
-            link = link.replace(
-                'dlaf/=/t/i/link/work/aid/momonoyu/', product_path)
-            link = link.replace(
-                'dlaf/=/link/work/aid/momonoyu/', product_path)
-            return link.replace('doonroom-001/', '')
+            return link.replace(
+                aff_link.format('/t/i/'), product_path
+            ).replace(
+                aff_link.format('/'), product_path
+            ).replace('doonroom-001/', '')
+
+        # Get rating points from a rating bar.
+        rate: Callable[[object], int] = lambda bar: \
+            int(bar.group(1) if not not bar else 0)
+
+        # Extract texts from each node in an array.
+        ext_text_from_array: Callable[[List[Any]], List[str]] = lambda arr:\
+            [i for i in map(lambda v:v.text, arr)]
 
         print(path, end="\r")
         bs = BS(open(path, 'r'), 'lxml')
@@ -61,7 +59,9 @@ class Parser(object):
 
             data['body'] = page.select_one('div.article-body-inner').get_text()
 
-            data['rating'] = rate(page)
+            data['rating'] = rate(re.search(
+                r'[■□]{10}　(\d+)', page.get_text()
+            ))
 
             data['page_category'] = page.find_all(
                 'dd', class_='article-category1'
