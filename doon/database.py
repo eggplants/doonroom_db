@@ -1,7 +1,5 @@
-from sqlite3 import connect
-from sqlite3 import Error
-from typing import List
-from typing import Any
+from sqlite3 import connect, Error
+from typing import List, Any, Callable
 
 
 class DoonDatabase(object):
@@ -38,14 +36,10 @@ class DoonDatabase(object):
 
     def create_tables(self) -> None:
         """Create the tables."""
-        def unko(schemas: List[str]) -> None:
-            for schema in schemas:
-                self.connect_db(
-                    self.db_filepath,
-                    'create table ' + schema
-                )
+        create_table: Callable[[List[str]], None] = lambda schema:\
+            self.connect_db(self.db_filepath, 'create table ' + schema)
 
-        unko([
+        create_table(
             '''page (
                     page_id integer,
                     article_link text,
@@ -55,26 +49,27 @@ class DoonDatabase(object):
                     rating integer,
                     category text,
                     type text
-                ) ''',
-
+                ) '''
+        )
+        create_table(
             '''link (
                     page_id integer,
                     buy_link text,
                     type text
-                ) ''',
-
+                ) '''
+        )
+        create_table(
             '''tag (
                     page_id integer,
                     tag text
                 ) '''
-        ])
+        )
 
     def push(self, datas: List[dict]) -> None:
         """Insert data to the database."""
-
-        def uniq(arr: List[Any]) -> List[Any]:
-            """Make array elms unique."""
-            return list(set(arr))
+        # Make array elms unique.
+        uniq: Callable[[List[Any]], List[Any]] = lambda arr:\
+            list(set(arr))
 
         page_data, link_data, tag_data = [], [], []
         for data in datas:
