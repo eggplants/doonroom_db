@@ -38,7 +38,7 @@ page {
   post_date text,
   title text,
   body text,
-  rating integer, -- 点数の無い記事は0を代入
+  rating integer, -- 点数の無い記事（無料作品など）は99を代入
   category text,
   type text -- [dojin|hypno|other]
 }

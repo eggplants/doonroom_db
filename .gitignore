@@ -2,3 +2,4 @@ __pycache__/
 dojin/
 hypno/
 *.db
+.mypy_cache/
