@@ -1,11 +1,10 @@
 from glob import glob
 import os
-from doon.parser import Parser
-from doon.database import DoonDatabase
-from doon.download import Download
+from doon.parser import Parser  # type: ignore
+from doon.database import DoonDatabase  # type: ignore
+from doon.download import Download  # type: ignore
 from doon.parser import DatasDict
-from typing import List
-from typing import Callable
+from typing import List, Callable
 
 
 def get_filepaths(dirpath: str) -> List[str]:

@@ -2,7 +2,7 @@ import shutil
 import os
 import urllib.request
 from typing import Callable
-from bs4 import BeautifulSoup as BS
+from bs4 import BeautifulSoup as BS  # type: ignore
 
 
 class Download(object):

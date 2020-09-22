@@ -1,8 +1,8 @@
 import datetime
 import re
 from typing import cast, List, Callable, Match, Sequence, Optional, TypedDict
-from bs4.element import Tag
-from bs4 import BeautifulSoup as BS
+from bs4.element import Tag  # type: ignore
+from bs4 import BeautifulSoup as BS  # type: ignore
 
 
 class ParseUnknownCategory(Exception):

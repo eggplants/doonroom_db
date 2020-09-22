@@ -1,6 +1,6 @@
 from sqlite3 import connect, Error
 from typing import List, Callable, Iterable
-from .parser import DatasDict
+from .parser import DatasDict  # type: ignore
 
 
 class DoonDatabase(object):
