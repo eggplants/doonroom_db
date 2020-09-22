@@ -12,14 +12,12 @@ class Download(object):
         self.save_dir = os.path.join('.', self.category)
         self.root = root
 
-    def get_all_pages(self) -> bool:
+    def get_all_pages(self) -> None:
         """Get pages till a page without an article is shown."""
-
         # Judge if articles exists in a source.
         chk_article_exist: Callable[[str], bool] = lambda source:\
             not not BS(source, "lxml").find_all(
-                'article', attrs={"itemtype": "http://schema.org/BlogPosting"}
-        )
+                'article', attrs={"itemtype": "http://schema.org/BlogPosting"})
 
         # Save a file.
         save_file: Callable[[str, str], None] = lambda source, filename:\
@@ -42,4 +40,6 @@ class Download(object):
             if chk_article_exist(source):
                 save_file(source, filename)
             else:
-                return True
+                break
+
+        print(' ' * 30, end='\r')

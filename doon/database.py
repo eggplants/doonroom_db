@@ -1,5 +1,6 @@
 from sqlite3 import connect, Error
-from typing import List, Any, Callable
+from typing import List, Callable, Iterable
+from .parser import DatasDict
 
 
 class DoonDatabase(object):
@@ -14,30 +15,35 @@ class DoonDatabase(object):
         connect(self.db_filepath)
         self.create_tables()
 
-    def connect_db(self, db_file: str, sql: str, params: tuple = ('')) -> None:
+    def connect_db(self, sql: str,
+                   p: Iterable[Iterable[str]] = tuple()) -> None:
         """Connect to the database and execute the SQL."""
         conn = None
         try:
-            conn = connect(db_file)
-            conn.set_trace_callback(lambda _: print(_, file=self.log))
+            conn = connect(self.db_filepath)
+            call_func: Callable[[str], None] = lambda _:\
+                print(_, file=self.log)
+            conn.set_trace_callback(call_func)
 
             c = conn.cursor()
-            if not params:
+            if not p:
                 c.execute(sql)
             else:
-                c.executemany(sql, params)
+                c.executemany(sql, p)
 
             conn.commit()
         except Error as e:
             print(e)
+            import sys
+            print(p, file=sys.stderr)
         finally:
             if conn:
                 conn.close()
 
     def create_tables(self) -> None:
         """Create the tables."""
-        create_table: Callable[[List[str]], None] = lambda schema:\
-            self.connect_db(self.db_filepath, 'create table ' + schema)
+        create_table: Callable[[str], None] = lambda schema:\
+            self.connect_db('create table ' + schema)
 
         create_table(
             '''page (
@@ -49,58 +55,44 @@ class DoonDatabase(object):
                     rating integer,
                     category text,
                     type text
-                ) '''
-        )
+                ) ''')
         create_table(
             '''link (
                     page_id integer,
                     buy_link text,
                     type text
-                ) '''
-        )
+                ) ''')
         create_table(
             '''tag (
                     page_id integer,
                     tag text
-                ) '''
-        )
+                ) ''')
 
-    def push(self, datas: List[dict]) -> None:
+    def push(self, datas: List[DatasDict]) -> None:
         """Insert data to the database."""
-        # Make array elms unique.
-        uniq: Callable[[List[Any]], List[Any]] = lambda arr:\
-            list(set(arr))
-
         page_data, link_data, tag_data = [], [], []
+        categorize_link: Callable[[str], str] = lambda link: \
+            'dlsite' if 'dlsite' in link \
+            else 'dmm' if 'dmm' in link \
+            else 'other'
         for data in datas:
             page_data.append(
-                (data['page_id'], data['article_link'],
-                 data['post_date'], data['title'], data['body'],
-                 data['rating'],
-                 data['page_category'], data['type'])
-            )
+                (
+                    data['page_id'],
+                    data['article_link'],
+                    data['post_date'],
+                    data['title'],
+                    data['body'],
+                    data['rating'],
+                    data['category'],
+                    data['type']))
             link_data.extend(
-                [(data['page_id'], link, (
-                    'dlsite' if 'dlsite' in link else
-                    'dmm' if 'dmm' in link else 'other'))
-                 for link in data['buy_links']]
-            )
+                [((data['page_id'], link, categorize_link(link)))
+                 for link in data['buy_links']])
             tag_data.extend(
-                [(data['page_id'], tag) for tag in data['tags']]
-            )
+                [(data['page_id'], tag) for tag in data['tags']])
 
         self.connect_db(
-            self.db_filepath,
-            'insert into page values (?,?,?,?,?,?,?,?)',
-            uniq(page_data)
-        )
-        self.connect_db(
-            self.db_filepath,
-            'insert into link values (?,?,?)',
-            uniq(link_data)
-        )
-        self.connect_db(
-            self.db_filepath,
-            'insert into tag values (?,?)',
-            uniq(tag_data)
-        )
+            'insert into page values (?,?,?,?,?,?,?,?)', page_data)
+        self.connect_db('insert into link values (?,?,?)', link_data)
+        self.connect_db('insert into tag values (?,?)', tag_data)
