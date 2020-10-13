@@ -14,7 +14,11 @@ jobs:
         uses: actions/checkout@v2
       - name: Push Tag
         run: |
-          git config user.name "eggplants"
-          git config user.email "w10776e8w@yahoo.co.jp"
+          git config --local user.name "eggplants"
+          git config --local user.email "w10776e8w@yahoo.co.jp"
           git tag "v$(date +%Y%m%d)"
-          git push origin master --tags
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          tags: true
+          github_token: ${{ secrets.PAT }}
