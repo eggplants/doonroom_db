@@ -1,0 +1,20 @@
+name: weektag
+
+on:
+  schedule:
+    - cron:  '0 0 * * 0'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Push Tag
+        run: |
+          git config user.name "eggplants"
+          git config user.email "w10776e8w@yahoo.co.jp"
+          git tag "v$(date +%Y%m%d)"
+          git push origin master --tags
