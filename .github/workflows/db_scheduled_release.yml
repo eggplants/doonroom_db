@@ -2,7 +2,7 @@ name: DB scheduled release
 
 on:
   schedule:
-    - cron: "0 15 * * *" # "0 15 * * 0"
+    - cron: "0 15 * * 0"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,7 +29,7 @@ jobs:
           echo .dump | sqlite3 doonroom.db | python conv.py > doonroom_my.sql
       - name: Get date
         run: |
-          echo "DATE=$(date +%y-%m-%d)" >> $GITHUB_ENV
+          echo "DATE=$(date +%y%m%d)" >> $GITHUB_ENV
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
