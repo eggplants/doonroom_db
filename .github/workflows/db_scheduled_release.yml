@@ -2,8 +2,7 @@ name: DB scheduled release
 
 on:
   schedule:
-    cron:
-      - "0 15 * * 0"
+    - cron: "0 15 * * 0"
 jobs:
   build:
     runs-on: ubuntu-latest
