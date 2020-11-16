@@ -2,6 +2,8 @@
 
 ![DB release](https://github.com/eggplants/doonroom_db/workflows/DB%20release/badge.svg) [![release]](https://github.com/eggplants/doonroom_db/actions?query=workflow%3Arelease) [![test]](https://github.com/eggplants/doonroom_db/actions?query=workflow%3Atest) [![Codacy Badge]](https://www.codacy.com/manual/eggplants/doonroom_db?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=eggplants/doonroom_db&amp;utm_campaign=Badge_Grade) [![Maintainability]](https://codeclimate.com/github/eggplants/doonroom_db/maintainability)
 
+[![PyPI version](https://badge.fury.io/py/doonroom-db.svg)](https://badge.fury.io/py/doonroom-db)
+
 * [同人音声の部屋]DB化
 
 ## 概要
