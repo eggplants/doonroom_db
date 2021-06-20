@@ -3,6 +3,7 @@ name: DB scheduled release
 on:
   schedule:
     - cron: "0 15 * * 0"
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
