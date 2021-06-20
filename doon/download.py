@@ -1,8 +1,9 @@
-import shutil
 import os
+import shutil
 import urllib.request
 from typing import Callable
-from bs4 import BeautifulSoup as BS  # type: ignore
+
+from bs4 import BeautifulSoup as BS
 
 
 class Download(object):

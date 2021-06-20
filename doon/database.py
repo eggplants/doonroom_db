@@ -1,6 +1,7 @@
-from sqlite3 import connect, Error
-from typing import List, Callable, Iterable
-from .parser import DatasDict  # type: ignore
+from sqlite3 import Error, connect
+from typing import Any, Callable, List
+
+from .parser import DatasDict
 
 
 class DoonDatabase(object):
@@ -16,7 +17,7 @@ class DoonDatabase(object):
         self.create_tables()
 
     def connect_db(self, sql: str,
-                   p: Iterable[Iterable[str]] = tuple()) -> None:
+                   p: List[Any] = [tuple()]) -> None:
         """Connect to the database and execute the SQL."""
         conn = None
         try:
@@ -67,10 +68,15 @@ class DoonDatabase(object):
                     page_id integer,
                     tag text
                 ) ''')
+        create_table(
+            '''play (
+                    page_id integer,
+                    play text
+                ) ''')
 
     def push(self, datas: List[DatasDict]) -> None:
         """Insert data to the database."""
-        page_data, link_data, tag_data = [], [], []
+        page_data, link_data, tag_data, play_data = [], [], [], []
         categorize_link: Callable[[str], str] = lambda link: \
             'dlsite' if 'dlsite' in link \
             else 'dmm' if 'dmm' in link \
@@ -91,8 +97,11 @@ class DoonDatabase(object):
                  for link in data['buy_links']])
             tag_data.extend(
                 [(data['page_id'], tag) for tag in data['tags']])
+            play_data.extend(
+                [(data['page_id'], play) for play in data['plays']])
 
         self.connect_db(
             'insert into page values (?,?,?,?,?,?,?,?)', page_data)
         self.connect_db('insert into link values (?,?,?)', link_data)
         self.connect_db('insert into tag values (?,?)', tag_data)
+        self.connect_db('insert into play values (?,?)', play_data)

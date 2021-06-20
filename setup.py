@@ -1,8 +1,8 @@
-from setuptools import find_packages, setup
+from setuptools import find_packages, setup  # type: ignore
 
 setup(
     name="doonroom_db",
-    version="0.8",
+    version="0.9",
     description="同人音声の部屋(http://doonroom.blog.jp/) DB",
     description_content_type="",
     long_description=open('README.md').read(),

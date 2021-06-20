@@ -4,3 +4,4 @@ hypno/
 *.db
 log
 .mypy_cache/
+*.vscode/

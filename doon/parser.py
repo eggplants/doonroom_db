@@ -1,8 +1,9 @@
 import datetime
 import re
-from typing import cast, List, Callable, Match, Sequence, Optional, TypedDict
-from bs4.element import Tag  # type: ignore
-from bs4 import BeautifulSoup as BS  # type: ignore
+from typing import Callable, List, Match, Optional, Sequence, TypedDict, cast
+
+from bs4 import BeautifulSoup
+from bs4.element import Tag
 
 
 class ParseUnknownCategory(Exception):
@@ -20,6 +21,7 @@ class DatasDict(TypedDict):
     buy_links: List[str]
     tags: List[str]
     type: str
+    plays: List[str]
 
 
 class Parser(object):
@@ -62,7 +64,7 @@ class Parser(object):
             (v['href'] if 'href' in v.attrs else None)
 
         print(path, end="\r")
-        bs = BS(open(path, 'r'), 'lxml')
+        bs = BeautifulSoup(open(path, 'r').read(), 'lxml')
         pages = bs.find_all(
             'article', attrs={"itemtype": "http://schema.org/BlogPosting"})
 
@@ -100,6 +102,14 @@ class Parser(object):
                  if i is not None and 'doonroom.blog.jp' not in i]))
 
             data['tags'] = ext_text(page.dl.find_all('a'))
+
+            plays = page.select_one('span[style="color: rgb(238, 102, 0);"],'
+                                    'span[style="color:#ee6600"]')
+
+            if plays:
+                data['plays'] = re.findall(r"\w+", plays.text)
+            else:
+                data['plays'] = []
 
             data['type'] = self.category
 
