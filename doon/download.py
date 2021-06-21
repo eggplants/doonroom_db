@@ -36,8 +36,9 @@ class Download(object):
             filename = self.root[(self.root.rfind('/') + 1):] + page_param
             get_url = self.root + page_param
             print(get_url, end="\r")
-            fid = urllib.request.urlopen(get_url)
-            source = fid.read().decode('utf-8')
+            req = urllib.request.Request(get_url)
+            with urllib.request.urlopen(req) as response:
+                source = response.read().decode('utf-8')
             if chk_article_exist(source):
                 save_file(source, filename)
             else:
