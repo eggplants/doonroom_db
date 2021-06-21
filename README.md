@@ -56,12 +56,6 @@ play {
 }
 ```
 
-## TODO
-
-- [ ] 検索 UI
-  - [ ] CLI
-  - [ ] GUI
-
 [maintainability]: https://api.codeclimate.com/v1/badges/aa5bc7bb4dbc9209ab8e/maintainability
 [codacy badge]: https://app.codacy.com/project/badge/Grade/26640885e35e482883b3119ef2fb6380
 [test]: https://github.com/eggplants/doonroom_db/workflows/test/badge.svg
