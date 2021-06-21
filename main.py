@@ -24,7 +24,7 @@ def main() -> None:
             'hypno', 'http://doonroom.blog.jp/archives/cat_966995.html'
         ).get_all_pages()
 
-    parsed_data = []  # type: List[DatasDict]
+    parsed_data: List[DatasDict] = []
     for category in ('dojin', 'hypno'):
         parser = Parser(category)
         for path in get_filepaths(category):
