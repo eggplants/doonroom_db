@@ -34,11 +34,18 @@ class Download(object):
 
             page_param = '?p={}'.format(pagenation)
             filename = self.root[(self.root.rfind('/') + 1):] + page_param
-            get_url = self.root + page_param
-            print(get_url, end="\r")
-            req = urllib.request.Request(get_url)
+            url = self.root + page_param
+            print(url, end="\r")
+
+            if url.lower().startswith('http'):
+                req = urllib.request.Request(url)
+            else:
+                raise ValueError from None
+
+            req = urllib.request.Request(url)
             with urllib.request.urlopen(req) as response:
                 source = response.read().decode('utf-8')
+
             if chk_article_exist(source):
                 save_file(source, filename)
             else:
