@@ -38,6 +38,7 @@ jobs:
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "doonroom.db,doonroom_my.sql"
+          artifacts: "doonroom_*.db,doonroom_my_*.sql"
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: week${{ env.DATE }}
+          artifactErrorsFailBuild: true
