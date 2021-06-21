@@ -31,6 +31,10 @@ jobs:
       - name: Get date
         run: |
           echo "DATE=$(date +%y%m%d)" >> $GITHUB_ENV
+      - name: Rename artifacts
+        run: |
+          mv doonroom.db doonroom_${{ env.DATE }}.db
+          mv doonroom_my.sql doonroom_my_${{ env.DATE }}.sql
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
