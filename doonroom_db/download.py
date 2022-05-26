@@ -47,12 +47,10 @@ class Download(object):
     @staticmethod
     def __check_article_exist(source: str) -> bool:
         """Judge if articles exists in a source."""
-        return (
-            BS(source, "lxml").find_all(
-                "article", attrs={"itemtype": "http://schema.org/BlogPosting"}
-            )
-            is not None
+        articles = BS(source, "lxml").find_all(
+            "article", attrs={"itemtype": "http://schema.org/BlogPosting"}
         )
+        return len(articles) != 0
 
     def __save_file(self, source: str, filename: str) -> None:
         """Save source as a file."""
