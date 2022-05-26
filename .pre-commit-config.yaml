@@ -45,7 +45,6 @@ repos:
     hooks:
       - id: mypy
         additional_dependencies:
-          - types-setuptools
-          # - ...
+          - types-beautifulsoup4
         files: ^doonroom_db/
         args: [--strict]

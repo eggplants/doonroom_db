@@ -1,22 +1,46 @@
 # doonroom_db
 
-[![DB scheduled release](https://github.com/eggplants/doonroom_db/workflows/DB%20scheduled%20release/badge.svg)](https://github.com/eggplants/doonroom_db/actions/runs/366247751) [![release]](https://github.com/eggplants/doonroom_db/actions?query=workflow%3Arelease) [![test]](https://github.com/eggplants/doonroom_db/actions?query=workflow%3Atest) [![Codacy Badge]](https://www.codacy.com/manual/eggplants/doonroom_db?utm_source=github.com&utm_medium=referral&utm_content=eggplants/doonroom_db&utm_campaign=Badge_Grade) [![Maintainability]](https://codeclimate.com/github/eggplants/doonroom_db/maintainability)
+[![PyPI version](
+  https://badge.fury.io/py/doonroom-db.svg
+)](
+  https://badge.fury.io/py/doonroom-db
+)
 
-[![PyPI version](https://badge.fury.io/py/doonroom-db.svg)](https://badge.fury.io/py/doonroom-db)
+[![release](
+  https://github.com/eggplants/doonroom_db/actions/workflows/release.yml/badge.svg
+  )](
+  https://github.com/eggplants/doonroom_db/actions/workflows/release.yml
+) [![DB scheduled release](
+  https://github.com/eggplants/doonroom_db/actions/workflows/db_scheduled_release.yml/badge.svg
+  )](
+  https://github.com/eggplants/doonroom_db/actions/workflows/db_scheduled_release.yml
+)
 
-- [同人音声の部屋]DB 化
+[![Maintainability](
+  https://api.codeclimate.com/v1/badges/aa5bc7bb4dbc9209ab8e/maintainability
+  )](
+  https://codeclimate.com/github/eggplants/doonroom_db/maintainability
+) [![pre-commit.ci status](
+  https://results.pre-commit.ci/badge/github/eggplants/doonroom_db/master.svg
+  )](
+  https://results.pre-commit.ci/latest/github/eggplants/doonroom_db/master
+)
 
-## 概要
-
-- [同人音声の部屋]を DB に入れて検索性を良くする
+[同人音声の部屋]を DB に入れて検索性を良くする
   - カテゴリ[同人音声]と[催眠音声]を取得
   - パースしてカテゴリごとのテーブルに格納
 
-## DB 作成
+## Install
 
 ```bash
+pip install doonroom-db
+```
+
+## DB 作成
+
+```shellsession
 # ページ取得 && パース && DB作成
-$ python main.py
+$ ddb
 Download pages? >> # "y"入力しEnterでページ新規取得
 ```
 
@@ -56,10 +80,6 @@ play {
 }
 ```
 
-[maintainability]: https://api.codeclimate.com/v1/badges/aa5bc7bb4dbc9209ab8e/maintainability
-[codacy badge]: https://app.codacy.com/project/badge/Grade/26640885e35e482883b3119ef2fb6380
-[test]: https://github.com/eggplants/doonroom_db/workflows/test/badge.svg
-[release]: https://github.com/eggplants/doonroom_db/workflows/release/badge.svg
 [同人音声の部屋]: http://doonroom.blog.jp/
 [同人音声]: http://doonroom.blog.jp/archives/cat_966405.html
 [催眠音声]: http://doonroom.blog.jp/archives/cat_966995.html
