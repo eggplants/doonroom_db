@@ -55,7 +55,7 @@ Download pages? >> y
 ## SQL Schema (SQLite3)
 
 ```sql
-page {
+create table page {
   page_id integer,
   article_link text,
   post_date text,
@@ -65,17 +65,16 @@ page {
   category text,
   type text -- [dojin|hypno|other]
 }
-
-link {
+create table link {
   page_id integer,
   buy_link text,
   type text -- [dlsite|fanza|other]
 }
-tag {
+create table tag {
   page_id integer,
   tag text
 }
-play {
+create table play {
   page_id integer,
   play text
 }
