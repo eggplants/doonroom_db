@@ -1,9 +1,9 @@
 # doonroom_db
 
 [![PyPI version](
-  https://badge.fury.io/py/doonroom-db.svg
+  https://img.shields.io/pypi/v/doonroom-db?color=blue
 )](
-  https://badge.fury.io/py/doonroom-db
+  https://pypi.org/project/doonroom-db/
 )
 
 [![release](
