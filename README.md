@@ -26,9 +26,13 @@
   https://results.pre-commit.ci/latest/github/eggplants/doonroom_db/master
 )
 
-[同人音声の部屋]を DB に入れて検索性を良くする
-  - カテゴリ[同人音声]と[催眠音声]を取得
-  - パースしてカテゴリごとのテーブルに格納
+- A Building Tool for [同人音声の部屋] Unofficial DB
+- Separate table for each category in DB
+  - [同人音声] (Dojin Voice) and [催眠音声] (Hypno Voice)
+
+[同人音声の部屋]: http://doonroom.blog.jp/
+[同人音声]: http://doonroom.blog.jp/archives/cat_966405.html
+[催眠音声]: http://doonroom.blog.jp/archives/cat_966995.html
 
 ## Install
 
@@ -36,22 +40,19 @@
 pip install doonroom-db
 ```
 
-## DB 作成
+## Build DB
 
 ```shellsession
-# ページ取得 && パース && DB作成
 $ ddb
-Download pages? >> # "y"入力しEnterでページ新規取得
+Download pages? >> y
+...
 ```
 
-## ログ
+## Log
 
-- `log`
-  - 発行した SQL
+`log`: issued sql statements are written
 
-## スキーマ
-
-- [同人音声], [催眠音声]共通
+## SQL Schema (SQLite3)
 
 ```sql
 page {
@@ -60,7 +61,7 @@ page {
   post_date text,
   title text,
   body text,
-  rating integer, -- 点数の無い記事（無料作品など）は99を代入
+  rating integer, -- `99` when the page is unrated
   category text,
   type text -- [dojin|hypno|other]
 }
@@ -79,7 +80,3 @@ play {
   play text
 }
 ```
-
-[同人音声の部屋]: http://doonroom.blog.jp/
-[同人音声]: http://doonroom.blog.jp/archives/cat_966405.html
-[催眠音声]: http://doonroom.blog.jp/archives/cat_966995.html
