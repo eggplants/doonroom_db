@@ -42,5 +42,5 @@ jobs:
         with:
           artifacts: "doonroom_*.db,doonroom_my_*.sql"
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: week${{ env.DATE }}
+          tag: week${{ env.DATE }}
           artifactErrorsFailBuild: true
