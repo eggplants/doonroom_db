@@ -6,7 +6,7 @@ from typing import Any
 from .parser import DatasDict
 
 
-class DoonDatabase(object):
+class DoonDatabase:
     def __init__(self, db_filepath: str) -> None:
         """Init."""
         self.db_filepath = db_filepath
