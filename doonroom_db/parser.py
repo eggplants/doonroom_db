@@ -26,7 +26,7 @@ class DatasDict(TypedDict):
     plays: list[str]
 
 
-class Parser(object):
+class Parser:
     def __init__(self, category: str) -> None:
         """Init."""
         if category not in ["hypno", "dojin"]:
@@ -38,7 +38,7 @@ class Parser(object):
         """Extract required information from the page sources and scrape it."""
 
         print(path, end="\r")
-        bs = BeautifulSoup(open(path, "r").read(), "lxml")
+        bs = BeautifulSoup(open(path).read(), "lxml")
         pages = bs.find_all(
             "article", attrs={"itemtype": "http://schema.org/BlogPosting"}
         )

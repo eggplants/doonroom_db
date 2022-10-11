@@ -7,7 +7,7 @@ import urllib.request
 from bs4 import BeautifulSoup as BS
 
 
-class Download(object):
+class Download:
     def __init__(self, category: str, root: str) -> None:
         """Init."""
         self.category = category
